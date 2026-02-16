@@ -59,7 +59,7 @@ It also returns a **severity score (0--100)** and a clear explanation of
 
 ## Steps to implement
 
-### 1. Install dependencies
+### 1. Install dependencies express,axios,dayjs,cors,dotenv,joi
 
 ``` bash
 npm install

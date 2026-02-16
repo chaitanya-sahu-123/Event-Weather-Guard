@@ -9,7 +9,7 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "type":"module",
+  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -17,7 +17,8 @@
     "cors": "^2.8.6",
     "dayjs": "^1.11.19",
     "dotenv": "^17.3.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "joi": "^18.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

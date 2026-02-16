@@ -1,15 +1,11 @@
 import { fetchHourlyForecast } from "../services/weatherService.js";
 import { filterForecastByWindow } from "../utils/timeUtils.js";
 import { classifyEvent } from "../services/classificationService.js";
+import generateSummary from "../utils/summaryGenerator.js";
 
-export const generateEventForecast = async (req, res) => {
+export const generateEventForecast = async (req, res, next) => {
   try {
     const { name, location, start_time, end_time } = req.body;
-
-    if (!location || !start_time || !end_time) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
     const hourlyData = await fetchHourlyForecast(
       location.latitude,
       location.longitude
@@ -22,22 +18,23 @@ export const generateEventForecast = async (req, res) => {
     );
 
     if (!eventWindowForecast.length) {
-      return res
-        .status(400)
-        .json({ error: "Event outside forecast range" });
+      return res.status(400).json({
+        error: "Event outside forecast range",
+      });
     }
 
     const result = classifyEvent(eventWindowForecast);
+    const summary = generateSummary(result.classification, result.reasons);
 
     return res.json({
       event: name,
       classification: result.classification,
       severity_score: result.severityScore,
-      summary: `${result.classification} weather conditions expected`,
+      summary,
       reason: result.reasons,
       event_window_forecast: eventWindowForecast,
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    next(error);
   }
 };

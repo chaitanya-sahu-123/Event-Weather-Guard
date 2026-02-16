@@ -1,7 +1,12 @@
 export const calculateSeverityScore = (maxRain, maxWind) => {
-  const windNormalized = Math.min((maxWind / 50) * 100, 100);
+  const rainWeight = 0.65;
+  const windWeight = 0.35;
 
-  const score = maxRain * 0.6 + windNormalized * 0.4;
+  const normalizedWind = Math.min((maxWind / 60) * 100, 100);
 
-  return Math.min(Math.round(score), 100);
+  const score =
+    maxRain * rainWeight +
+    normalizedWind * windWeight;
+
+  return Math.round(Math.min(score, 100));
 };
