@@ -57,6 +57,19 @@ This API includes a rate limiter to reduce abuse and protect the upstream Open-M
 
 ---
 
+## Tradeoffs
+
+This service intentionally favors simplicity and transparency. That comes with some tradeoffs:
+
+- Deterministic rules are explainable, but they can be less flexible than probabilistic/ML approaches and may not fit every domain/event type.
+- Reliance on a third-party forecast (Open-Meteo) means availability and data quality depend on the upstream provider.
+- No authentication by default keeps onboarding simple, but it also means you must rely on rate limiting and infrastructure controls to reduce abuse.
+- Rate limiting protects the API and upstream usage, but it can block legitimate high-volume clients (e.g., load tests, dashboards) unless limits are tuned.
+- No caching means each request can trigger a live upstream call, increasing latency and upstream usage.
+- Request logging improves debuggability, but logs can grow quickly in production and should be handled with retention/rotation.
+
+---
+
 # Event Weather Risk Forecast API
 
 A simple, deterministic weather-risk classification API for outdoor
