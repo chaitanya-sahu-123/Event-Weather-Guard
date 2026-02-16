@@ -1,7 +1,9 @@
 import Joi from "joi";
 
+const MAX_EVENT_DURATION_MS = 72 * 60 * 60 * 1000; // 72 hours
+
 const eventSchema = Joi.object({
-  name: Joi.string().trim().min(3).required(),
+  name: Joi.string().trim().min(3).max(120).required(),
 
   location: Joi.object({
     latitude: Joi.number().min(-90).max(90).required(),
@@ -33,10 +35,21 @@ function validateEvent(req, res, next) {
     });
   }
 
-  if (new Date(value.start_time) >= new Date(value.end_time)) {
+  const start = new Date(value.start_time);
+  const end = new Date(value.end_time);
+
+  if (start >= end) {
     return res.status(400).json({
       error: "Invalid time window",
       message: "start_time must be earlier than end_time",
+      requestId: req.requestId,
+    });
+  }
+
+  if (end - start > MAX_EVENT_DURATION_MS) {
+    return res.status(400).json({
+      error: "Event duration too long",
+      message: "Maximum event duration is 72 hours",
       requestId: req.requestId,
     });
   }
