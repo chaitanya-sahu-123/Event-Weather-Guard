@@ -105,6 +105,7 @@ The server runs on:
 
 1. Build docker image - docker build -t event-forecast-api .
 2. Run the container - docker run -p 5000:5000 event-forecast-api
+   
 The API runs at http://localhost:5000
 
 ------------------------------------------------------------------------
