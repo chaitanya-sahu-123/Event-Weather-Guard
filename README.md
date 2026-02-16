@@ -313,3 +313,10 @@ Architecture overview:
 -   If any hour is unsafe → entire event is unsafe\
 -   Sustained wind speed is considered (not sudden high/low speed winds)\
 -   No caching is implemented (live API call per request is made)
+
+-----------------------------------------------------------------------
+
+## Further improvements that can be made
+
+-   Implement caching using Redis for frequently searched locations. Useful in cases like: Ind vs Pak match at a stadium, Concert of a famous singer -> Thousands of people search for the same location before the start of the event. This will help fetch the results faster.
+-   Add an Auth layer to allow only genuine users to access and use the application.
