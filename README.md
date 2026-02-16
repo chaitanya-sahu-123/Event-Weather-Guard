@@ -37,6 +37,23 @@ No database is used. No authentication is required. The focus is purely on weath
 - Axios
 - DayJS
 - Open-Meteo API
+- express-rate-limit (rate limiting)
+
+---
+
+## Rate Limiting
+
+This API includes a rate limiter to reduce abuse and protect the upstream Open-Meteo API.
+
+- Applied to: `POST /event-forecast`
+- Policy: **100 requests per IP address per 15 minutes**
+- When exceeded: returns **HTTP 429** with:
+
+### Advantages
+
+- Protects the service from accidental or abusive traffic spikes
+- Helps prevent your Open-Meteo usage from being overwhelmed
+- Improves stability and response times under load
 
 ---
 
@@ -59,7 +76,7 @@ It also returns a **severity score (0--100)** and a clear explanation of
 
 ## Steps to implement
 
-### 1. Install dependencies express,axios,dayjs,cors,dotenv,joi
+### 1. Install dependencies express,axios,dayjs,cors,dotenv,joi, express-rate-limit
 
 ``` bash
 npm install
@@ -255,6 +272,7 @@ Proper HTTP status codes are returned:
 
 -   400 → Missing required fields\
 -   400 → Event outside forecast range\
+-   429 → Too many requests (rate limit exceeded)\
 -   500 → Weather API failure
 
 ------------------------------------------------------------------------
